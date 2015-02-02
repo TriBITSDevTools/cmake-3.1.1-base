@@ -1,0 +1,20 @@
+--- cmCPackGenerator.cxx.saved	2015-01-29 11:59:10.836660531 -0500
++++ cmCPackGenerator.cxx	2015-01-29 16:25:00.185529148 -0500
+@@ -437,6 +437,17 @@
+           cmCPackLogger(cmCPackLog::LOG_DEBUG, "Will create a symlink: "
+                          << symlinkedIt->second << "--> "
+                          << symlinkedIt->first << std::endl);
++          std::string destDir =
++            cmSystemTools::GetFilenamePath(symlinkedIt->second);
++          if(!cmSystemTools::MakeDirectory(destDir))
++          {
++            cmCPackLogger(cmCPackLog::LOG_DEBUG, "Cannot create dir: "
++              << destDir
++              << "\nTrying to create symlink: "
++              << symlinkedIt->second << "--> "
++              << symlinkedIt->first
++              << std::endl);
++          }
+           if (!cmSystemTools::CreateSymlink((symlinkedIt->first).c_str(),
+                                             (symlinkedIt->second).c_str()))
+             {
